@@ -1,0 +1,167 @@
+Sub EXTRAER()
+    On Error GoTo ErrHandler
+    
+    ' Set Outlook application object.
+    Dim objOutlook As Object
+    Set objOutlook = CreateObject("Outlook.Application")
+    Dim myAttachments As Object
+    
+    Dim objNSpace As Object     ' Create and Set a NameSpace OBJECT.
+    ' The GetNameSpace() method will represent a specified Namespace.
+    Set objNSpace = objOutlook.GetNamespace("MAPI")
+    
+    Dim myFolder As Object  ' Create a folder object.
+    Set myFolder = objNSpace.GetDefaultFolder(olFolderInbox)
+    Dim myDestFolder As Object  ' Create a dest foldler object.
+    Dim myDestFolderTanques As Object  ' Create a dest foldler object.
+    Dim myDestFolderTableros As Object  ' Create a dest foldler object.
+    Set myDestFolder = objNSpace.GetDefaultFolder(olFolderInbox).Folders("Cotizaciones")
+    Set myDestFolderTanques = objNSpace.GetDefaultFolder(olFolderInbox).Folders("Tanques")
+    Set myDestFolderTableros = objNSpace.GetDefaultFolder(olFolderInbox).Folders("Tableros")
+    Dim objItem As Object
+    Dim iRows, iCols, iLoops As Integer
+    iRows = 1
+    iLoops = 0
+    i = 0
+    'Do While True  'Siempre va a realizar la rutina de busqueda y extraccion de datos
+    Do While i < 1
+    i = i + 1
+    If myFolder.Items.Count > 0 Then
+        Sheets("DAQ").Select
+        Range("B2:B40").Select
+        Range("E2").Activate
+        Selection.ClearContents
+        Dim objMail As Outlook.MailItem
+        ' Loop through each item in the folder.
+        'For Each objItem In myFolder.Items.GetLast.Class
+            'If objItem.Class = olMail Then
+            
+        If myFolder.Items.GetLast.Subject = "Modelado tanques" Then
+            
+            
+            Set objMail = myFolder.Items.GetLast
+            Range("B3") = objMail.SenderEmailAddress
+            Range("B4") = objMail.To
+            Range("B5") = objMail.Subject
+            Range("B6") = objMail.ReceivedTime
+            Range("B13") = objMail.Body
+
+            Range("B13").Select
+            Range("B14").Select
+            Range("B13").Select
+            'Selection.TextToColumns Destination:=Range("B14"), DataType:=xlDelimited, _
+            'TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
+            'Semicolon:=False, Comma:=False, Space:=False, Other:=True, OtherChar _
+            ':="" & Chr(10) & "", FieldInfo:=Array(Array(1, 1), Array(2, 1), Array(3, 1), Array(4, 1), Array(5, _
+            '1), Array(6, 1), Array(7, 1), Array(8, 1), Array(9, 1), Array(10, 1), Array(11, 1)), _
+            'TrailingMinusNumbers:=True
+
+
+
+
+    Application.CutCopyMode = False
+    ActiveSheet.ListObjects.Add(xlSrcRange, Range("$B$13"), , xlNo).Name = "TablaContenidoBasico"
+    Range("TablaContenidoBasico[[#All],[Column1]]").Select
+    Application.CutCopyMode = False
+    ActiveWorkbook.Queries.Add Name:="TablaDatos", Formula:= _
+        "let" & Chr(13) & "" & Chr(10) & "    Source = Excel.CurrentWorkbook(){[Name=""TablaContenidoBasico""]}[Content]," & Chr(13) & "" & Chr(10) & "    #""Changed Type"" = Table.TransformColumnTypes(Source,{{""Column1"", type text}})," & Chr(13) & "" & Chr(10) & "    #""Split Column by Delimiter"" = Table.SplitColumn(#""Changed Type"", ""Column1"", Splitter.SplitTextByDelimiter(""#(cr)"", QuoteStyle.Csv), {""Column1.1"", ""Column1.2"", ""Column1.3"", ""Column1.4"", """ & _
+        "Column1.5"", ""Column1.6"", ""Column1.7"", ""Column1.8"", ""Column1.9"", ""Column1.10"", ""Column1.11"", ""Column1.12""})," & Chr(13) & "" & Chr(10) & "    #""Changed Type1"" = Table.TransformColumnTypes(#""Split Column by Delimiter"",{{""Column1.1"", Int64.Type}, {""Column1.2"", type text}, {""Column1.3"", type text}, {""Column1.4"", type text}, {""Column1.5"", type text}, {""Column1.6"", typ" & _
+        "e text}, {""Column1.7"", type text}, {""Column1.8"", type text}, {""Column1.9"", type text}, {""Column1.10"", type text}, {""Column1.11"", Int64.Type}, {""Column1.12"", type text}})" & Chr(13) & "" & Chr(10) & "in" & Chr(13) & "" & Chr(10) & "    #""Changed Type1"""
+    With ActiveSheet.ListObjects.Add(SourceType:=0, Source:= _
+        "OLEDB;Provider=Microsoft.Mashup.OleDb.1;Data Source=$Workbook$;Location=Table4;Extended Properties=""""" _
+        , Destination:=Range("$B$17")).QueryTable
+        .CommandType = xlCmdSql
+        .CommandText = Array("SELECT * FROM [TablaContenidoBasico]")
+        .RowNumbers = False
+        .FillAdjacentFormulas = False
+        .PreserveFormatting = True
+        .RefreshOnFileOpen = False
+        .BackgroundQuery = True
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .PreserveColumnInfo = True
+        .ListObject.DisplayName = "Table4_2"
+        .Refresh BackgroundQuery:=False
+    End With
+    ActiveWindow.SmallScroll Down:=3
+    Range("Table4_2[Column1.1]").Select
+    ActiveSheet.ListObjects("Table4_2").Unlist
+    Range("Table4[Column1]").Select
+    Selection.Cut
+    Range("B13").Select
+    ActiveSheet.Paste
+    ActiveWindow.SmallScroll Down:=6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            'objMail.Move myDestFolderTanques
+        
+        'ElseIf myFolder.Items.GetLast.Subject = "Modelado tableros" Then
+        ElseIf myFolder.Items.GetLast.Subject = "Modelado tableros" Then
+            Dim objMail2 As Outlook.MailItem
+            Set objMail2 = myFolder.Items.GetLast
+            Cells(2, 1) = objMail2.SenderEmailAddress
+            Cells(2, 2) = objMail2.To
+            Cells(2, 3) = objMail2.Subject
+            Cells(2, 4) = objMail2.ReceivedTime
+            Cells(2, 5) = objMail2.Body
+            Cells(2, 5).Select
+            
+            'objMail.Move myDestFolderTableros
+            
+            
+        End If
+        
+        
+        
+        
+        
+        
+    Else
+        Application.Wait (Now + TimeValue("0:00:10"))
+    End If
+         
+    Loop
+    
+    
+    ' En caso de que salga del while loop, se liberan los objetos
+    ' Release.
+    Set objMail = Nothing
+    Set objOutlook = Nothing
+    Set objNSpace = Nothing
+    Set myFolder = Nothing
+
+    
+    
+ErrHandler: ' En caso de que suceda un error, que imprima toda la informacion asociada al mismo
+    Debug.Print Err.Description
+    Debug.Print Err.Number
+    Debug.Print Err.HelpContext
+    Debug.Print Err.LastDllError
+    Debug.Print Err.Source
+    
+    
+    
+End Sub
+
+

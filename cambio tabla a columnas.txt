@@ -1,0 +1,49 @@
+            Application.CutCopyMode = False
+            ActiveSheet.ListObjects.Add(xlSrcRange, Range("$E$1"), , xlNo).Name = "TablaContenidoBasico"
+            Range("TablaContenidoBasico[[#All],[Column1]]").Select
+            Application.CutCopyMode = False
+            ActiveWorkbook.Queries.Add Name:="TablaDatos", Formula:= _
+                "let" & Chr(13) & "" & Chr(10) & "    Source = Excel.CurrentWorkbook(){[Name=""TablaContenidoBasico""]}[Content]," & Chr(13) & "" & Chr(10) & "    #""Changed Type"" = Table.TransformColumnTypes(Source,{{""Column1"", type text}})," & Chr(13) & "" & Chr(10) & "    #""Split Column by Delimiter"" = Table.SplitColumn(#""Changed Type"", ""Column1"", Splitter.SplitTextByDelimiter(""#(cr)#(cr)"", QuoteStyle.Csv), {""Column1.1"", ""Column1.2"", ""Column1.3"", ""Column1.4" & _
+                """, ""Column1.5""})," & Chr(13) & "" & Chr(10) & "    #""Changed Type1"" = Table.TransformColumnTypes(#""Split Column by Delimiter"",{{""Column1.1"", Int64.Type}, {""Column1.2"", Int64.Type}, {""Column1.3"", type text}, {""Column1.4"", type text}, {""Column1.5"", type text}})," & Chr(13) & "" & Chr(10) & "    #""Renamed Columns"" = Table.RenameColumns(#""Changed Type1"",{{""Column1.1"", ""Valor 1""}, {""Column1.2"", ""Va" & _
+                "lor 2""}, {""Column1.3"", ""Valor 3""}, {""Column1.4"", ""Valor 4""}, {""Column1.5"", ""Valor 5""}})" & Chr(13) & "" & Chr(10) & "in" & Chr(13) & "" & Chr(10) & "    #""Renamed Columns"""
+            With ActiveSheet.ListObjects.Add(SourceType:=0, Source:= _
+                "OLEDB;Provider=Microsoft.Mashup.OleDb.1;Data Source=$Workbook$;Location=TablaDatos;Extended Properties=""""" _
+                , Destination:=Range("$F$10")).QueryTable
+                .CommandType = xlCmdSql
+                .CommandText = Array("SELECT * FROM [TablaDatos]")
+                .RowNumbers = False
+                .FillAdjacentFormulas = False
+                .PreserveFormatting = True
+                .RefreshOnFileOpen = False
+                .BackgroundQuery = True
+                .RefreshStyle = xlInsertDeleteCells
+                .SavePassword = False
+                .SaveData = True
+                .AdjustColumnWidth = True
+                .RefreshPeriod = 0
+                .PreserveColumnInfo = True
+                .ListObject.DisplayName = "TablaDatos"
+                .Refresh BackgroundQuery:=False
+            End With
+
+            Range("E1:E3").Select
+            Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+            Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+            Selection.Borders(xlEdgeLeft).LineStyle = xlNone
+            Selection.Borders(xlEdgeTop).LineStyle = xlNone
+            Selection.Borders(xlEdgeBottom).LineStyle = xlNone
+            Selection.Borders(xlEdgeRight).LineStyle = xlNone
+            Selection.Borders(xlInsideVertical).LineStyle = xlNone
+            Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+            With Selection.Interior
+                .Pattern = xlNone
+                .TintAndShade = 0
+                .PatternTintAndShade = 0
+            End With
+            Range("F7").Select
+            
+            ActiveWorkbook.Queries("TablaDatos").Delete
+            
+            Columns("E:E").ColumnWidth = 26.89
+            Range("E1").Select
+            ActiveCell.FormulaR1C1 = "Contenido"

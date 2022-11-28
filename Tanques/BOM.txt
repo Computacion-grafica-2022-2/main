@@ -1,0 +1,13 @@
+Public Sub ExportarBOM()
+    Dim oDoc As AssemblyDocument
+    Set oDoc = ThisApplication.ActiveDocument
+    
+    Dim oBOM As BOM
+    Set oBOM = oDoc.ComponentDefinition.BOM
+    oBOM.StructuredViewFirstLevelOnly = False
+    oBOM.StructuredViewEnabled = True
+    
+    Dim oStructuredBOMView As BOMView
+    Set oStructuredBOMView = oBOM.BOMViews.Item("Estructurado")
+    oStructuredBOMView.Export "C:\Users\Personal\Desktop\BOM.xlsx", kMicrosoftExcelFormat
+End Sub

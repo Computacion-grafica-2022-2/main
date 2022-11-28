@@ -1,0 +1,44 @@
+Public Sub Exportar3D()
+    Dim oPDFAddIn As ApplicationAddIn
+    Dim oAddin As ApplicationAddIn
+    For Each oAddin In ThisApplication.ApplicationAddIns
+        If oAddin.ClassIdString = "{3EE52B28-D6E0-4EA4-8AA6-C2A266DEBB88}" Then
+            Set oPDFAddIn = oAddin
+            Exit For
+        End If
+    Next
+    
+    If oPDFAddIn Is Nothing Then
+        MsgBox "Inventor 3D PDF Addin not loaded."
+        Exit Sub
+    End If
+    
+    Dim oPDFConvertor3D
+    Set oPDFConvertor3D = oPDFAddIn.Automation
+    
+    Dim oDocument As Document
+    Set oDocument = ThisApplication.ActiveDocument
+    
+    Dim oOptions As NameValueMap
+    Set oOptions = ThisApplication.TransientObjects.CreateNameValueMap
+  
+    oOptions.Value("FileOutputLocation") = ("C:\Users\Personal\Desktop\Modelo3D.pdf")
+    oOptions.Value("ExportAnnotations") = 0
+    oOptions.Value("ExportWokFeatures") = 0
+    oOptions.Value("GenerateAndAttachSTEPFile") = False
+    oOptions.Value("LimitToEntitiesInDVRs") = True
+    oOptions.Value("VisualizationQuality") = AccuracyEnum.kVeryHigh
+    
+    Dim sProps(0) As String
+    sProps(0) = "{F29F85E0-4FF9-1068-AB91-08002B27B3D9}:Title"  ' Title
+    
+    oOptions.Value("ExportAllProperties") = False
+    oOptions.Value("ExportProperties") = sProps
+ 
+    Dim sDesignViews(0) As String
+    sDesignViews(0) = oDocument.ComponentDefinition.RepresentationsManager.ActiveDesignViewRepresentation.Name
+    
+    oOptions.Value("ExportDesignViewRepresentations") = sDesignViews
+    
+    Call oPDFConvertor3D.Publish(oDocument, oOptions)
+End Sub
