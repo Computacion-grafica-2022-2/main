@@ -1,0 +1,12 @@
+oView1=ThisApplication.CommandManager.Pick(SelectionFilterEnum.kDrawingViewFilter, "Select the a view to retrieve position of")
+
+pt1 = oView1.Position
+'MsgBox("X: " & pt1.X & vbLf & "Y: " & pt1.Y)
+ht1= oView1.Height
+
+oView2 = ThisApplication.CommandManager.Pick(SelectionFilterEnum.kDrawingViewFilter, "Select the a view to align position of")
+
+pt2 = oView2.Position
+ht2 = oView2.height
+
+ActiveSheet.View(oView2.name).SetCenter(pt2.X * 10, (pt1.Y - (ht1/2) + (ht2/2))*10)

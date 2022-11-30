@@ -1,7 +1,7 @@
 %function []=Parametros_Tableros()
 clc;clear all
 
-[num,txt,raw] = xlsread('C:\Users\David\Documents\unal\Computacion grafica\Projecto cajas\Modelado\FormularioWeb.xlsx');
+[num,txt,raw] = xlsread('C:\Users\andre\Downloads\Computacion Grafica\main\Tableros\FormularioWeb.xlsx');
 
 Monofasicas=num(1);
 bifasicas=num(2);
@@ -46,9 +46,9 @@ for i=1:Ncuentas
     end
     
 end
-LongT
-Long_bandeja
-Altura_bandeja
+LongT;
+Long_bandeja;
+Altura_bandeja;
 LongTolerance=100;
 AltuTolerance=50;
 CompartimentoAcometidas=300;
@@ -56,7 +56,7 @@ CompartimentoBarraje=400;
 LongMax=max(Long_bandeja)*10+LongTolerance;     %max(Long_bandeja)*10 toma la mayero distacion y la pasa a mm
 AlturaTotal=sum(Altura_bandeja)*10+AltuTolerance;          % Suma las alturas y las pasa a mm cajon central
 AlturaTotal=AlturaTotal+CompartimentoAcometidas+CompartimentoBarraje; % Altura Total del tablero
-filename = 'C:\Users\David\Documents\unal\Computacion grafica\Projecto cajas\Modelado\datos.xlsx';
+filename = 'C:\Users\andre\Downloads\Computacion Grafica\main\Tableros\datos.xlsx';
 AB=zeros(7,1);          % Establecemos el numero maximo de bandejas
 AB(1:bandejas,1)=transpose(10*Altura_bandeja);
 A = {bandejas;AlturaTotal;LongMax;AB(1);AB(2);AB(3);AB(4);AB(5);AB(6);AB(7)};
@@ -64,6 +64,6 @@ sheet = 1;
 xlRange = 'B1';
 xlswrite(filename,A,sheet,xlRange)
 
-AlturaTotal
-LongMax
-A
+AlturaTotal;
+LongMax;
+A;
