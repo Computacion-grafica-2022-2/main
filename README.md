@@ -8,5 +8,6 @@
 - Miguel Ángel Baquero Cortes
 ***
 ### Informe del proyecto:
-[click aqui para editar el informe del proyecto](https://www.overleaf.com/2177453683ddbmcxzcthrp)
-[click aqui para ver el pdf final del informe](https://www.overleaf.com/2177453683ddbmcxzcthrp)
+[Click aquí para editar el informe del proyecto](https://www.overleaf.com/2177453683ddbmcxzcthrp)
+
+[Click aquí para ver el pdf final del informe](https://github.com/Computacion-grafica-2022-2/main/blob/main/Informe%20CG2022-2.pdf)
